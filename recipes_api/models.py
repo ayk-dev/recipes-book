@@ -44,6 +44,8 @@ class RecipeModel(models.Model):
         blank=True,
     )
 
+    ingredients = models.ManyToManyField(IngredientsModel, related_name='ingredients')
+
     method = models.TextField(
         max_length=1000,
     )
@@ -52,10 +54,8 @@ class RecipeModel(models.Model):
 
     servings = models.PositiveIntegerField()
 
-    ingredients = models.ForeignKey(
-        IngredientsModel,
-        on_delete=models.CASCADE,
-    )
+    created = models.DateField(auto_now_add=True)
+    updated = models.DateField(auto_now=True)
 
     # image = models.ImageField(
     #     upload_to='pets',
