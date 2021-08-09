@@ -17,4 +17,4 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RecipeModel
-        fiels = '__all__'
+        fields = '__all__'
