@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -19,4 +20,29 @@ class RecipeListCreate(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class RecipeGetUpdateDelete(APIView):
+    def put(self, request, recipe_id):
+        recipe = get_object_or_404(RecipeModel, pk=recipe_id)
+        serializer = RecipeSerializer(recipe, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+
+    def get(self, request, recipe_id):
+        try:
+            recipe = RecipeModel.objects.get(id=recipe_id)
+            recipe_serializer = RecipeSerializer(recipe)
+            return Response(recipe_serializer.data)
+        except:
+            return Response({"message": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    def delete(self, request, recipe_id):
+        try:
+            recipe = RecipeModel.objects.get(id=recipe_id)
+            recipe.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Exception as ex:
+            return Response({"message": "Not found"}, status=status.HTTP_404_NOT_FOUND)
 
