@@ -1,6 +1,8 @@
 from django.contrib import admin
 
-from recipes_api.models import RecipeModel, IngredientsModel
+from recipes_api.models import RecipeModel, IngredientsModel, Comment
+
+admin.site.site_header = 'Cooking monster admin'
 
 
 @admin.register(RecipeModel)
@@ -12,5 +14,14 @@ class RecipeAdmin(admin.ModelAdmin):
     def likes_count(self, obj):
         return obj.likes.count()
 
+
+@admin.register(IngredientsModel)
+class IngredientsAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    pass
 
 
