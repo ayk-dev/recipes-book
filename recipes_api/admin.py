@@ -9,8 +9,8 @@ class RecipeAdmin(admin.ModelAdmin):
     sortable_by = ('title', 'category')
     list_filter = ('category', 'title')
 
-    # def likes_count(self, obj):
-    #     return obj.like_set.count()
-    # add 'likes_count' to list_display - optional
+    def likes_count(self, obj):
+        return obj.likes.count()
+
 
 

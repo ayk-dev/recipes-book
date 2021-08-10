@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class IngredientsModel(models.Model):
@@ -8,6 +9,12 @@ class IngredientsModel(models.Model):
     quantity = models.CharField(
         max_length=50,
     )
+
+    def __str__(self):
+        return self.name
+
+
+
 
 
 class RecipeModel(models.Model):
@@ -34,9 +41,7 @@ class RecipeModel(models.Model):
         # blank=True,
     )
 
-    title = models.CharField(
-        max_length=50,
-    )
+    title = models.CharField(max_length=50)
 
     description = models.TextField(
         max_length=1000,
@@ -45,10 +50,6 @@ class RecipeModel(models.Model):
     )
 
     ingredients = models.ManyToManyField(IngredientsModel, related_name='ingredients')
-
-    method = models.TextField(
-        max_length=1000,
-    )
 
     time = models.PositiveIntegerField()
 
@@ -62,10 +63,37 @@ class RecipeModel(models.Model):
     # )
 
     # author = models.ForeignKey(
-    #     UserModel,
+    #     User,
     #     on_delete=models.CASCADE,
     # )
 
+    def __str__(self):
+        return self.title
 
 
+class Like(models.Model):
+    recipe = models.ForeignKey(RecipeModel, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='likes',
+        related_query_name='like',
+    )
+
+
+class Comment(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    recipe = models.ForeignKey(
+        RecipeModel,
+        on_delete=models.CASCADE,
+        related_name='comments',
+        related_query_name='comment',
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments', related_query_name='comment')
+    created = models.DateField(auto_now_add=True)
+    updated = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return self.title
 
