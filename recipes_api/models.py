@@ -60,9 +60,10 @@ class RecipeModel(models.Model):
     created = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now=True)
 
-    # image = models.ImageField(
-    #     upload_to='pets',
-    # )
+    image = models.ImageField(
+        upload_to='recipes',
+        default='recipes/default.png',
+    )
 
     # author = models.ForeignKey(
     #     User,
@@ -98,4 +99,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.title
-

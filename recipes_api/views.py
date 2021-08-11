@@ -45,4 +45,3 @@ class RecipeGetUpdateDelete(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Exception as ex:
             return Response({"message": "Not found"}, status=status.HTTP_404_NOT_FOUND)
-

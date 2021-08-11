@@ -35,4 +35,3 @@ class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecipeModel
         fields = '__all__'
-
