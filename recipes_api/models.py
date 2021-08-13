@@ -3,20 +3,7 @@ from django.contrib.auth.models import User
 
 
 # TODO UserModel = get_user_model() insted of User
-
-
-class IngredientsModel(models.Model):
-    name = models.CharField(max_length=50)
-    quantity = models.FloatField()
-    quantity_type = models.CharField(
-        max_length=10,
-        null=True,
-    )
-
-# TODO fix recipe-ingredients relations
-
-    def __str__(self):
-        return f'{self.name}: {self.quantity} {self.quantity_type}'
+from django.utils import timezone
 
 
 class RecipeModel(models.Model):
@@ -51,14 +38,18 @@ class RecipeModel(models.Model):
         blank=True,
     )
 
-    ingredients = models.ManyToManyField(IngredientsModel, related_name='ingredients')
+    ingredients = models.CharField(
+        max_length=1000,
+        null=True,
+        blank=True,
+    )
 
     time = models.PositiveIntegerField()
 
     servings = models.PositiveIntegerField()
 
-    created = models.DateField(auto_now_add=True)
-    updated = models.DateField(auto_now=True)
+    created = models.DateTimeField(default=timezone.now)
+    updated = models.DateTimeField(default=timezone.now)
 
     image = models.ImageField(
         upload_to='recipes',
@@ -69,6 +60,8 @@ class RecipeModel(models.Model):
     #     User,
     #     on_delete=models.CASCADE,
     # )
+    class Meta:
+        ordering = ['updated']
 
     def __str__(self):
         return self.title
