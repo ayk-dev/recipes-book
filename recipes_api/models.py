@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 
-class RecipeModel(models.Model):
+class CategoryModel(models.Model):
     TYPE_CHOICE_BREAKFAST = 'breakfast'
     TYPE_CHOICE_APPETIZER = 'appetizer'
     TYPE_CHOICE_MAINCOURSE = 'main_course'
@@ -23,31 +23,29 @@ class RecipeModel(models.Model):
         (TYPE_CHOICE_DRINK, 'Drink')
     )
 
-    category = models.CharField(
+    name = models.CharField(
         max_length=12,
         choices=TYPE_CHOICES,
-        # null=True,
-        # blank=True,
+    # null=True,
+    # blank=True,
     )
 
-    title = models.CharField(max_length=50)
 
+class RecipeModel(models.Model):
+    category = models.ForeignKey(CategoryModel, on_delete=models.PROTECT)
+    title = models.CharField(max_length=50)
     description = models.TextField(
         max_length=1000,
         null=True,
         blank=True,
     )
-
     ingredients = models.CharField(
         max_length=1000,
         null=True,
         blank=True,
     )
-
     time = models.PositiveIntegerField()
-
     servings = models.PositiveIntegerField()
-
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(default=timezone.now)
 
@@ -61,7 +59,7 @@ class RecipeModel(models.Model):
     #     on_delete=models.CASCADE,
     # )
     class Meta:
-        ordering = ['updated']
+        ordering = ['-updated']
 
     def __str__(self):
         return self.title
