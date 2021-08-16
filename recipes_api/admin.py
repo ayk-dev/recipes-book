@@ -15,6 +15,8 @@ class RecipeAdmin(admin.ModelAdmin):
         return obj.likes.count()
 
 
+
+
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     pass

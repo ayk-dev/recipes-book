@@ -10,6 +10,6 @@ urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('recipes/', include('recipes_api.urls')),
-    path('users/', include('users_auth.urls')),
+    path('users/', include('rest_framework.urls')),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

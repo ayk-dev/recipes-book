@@ -1,9 +1,9 @@
-from django.db import models
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
-
-
-# TODO UserModel = get_user_model() insted of User
+from django.db import models
 from django.utils import timezone
+
+# UserModel = get_user_model()
 
 
 class CategoryModel(models.Model):
@@ -32,7 +32,29 @@ class CategoryModel(models.Model):
 
 
 class RecipeModel(models.Model):
-    category = models.ForeignKey(CategoryModel, on_delete=models.PROTECT)
+    TYPE_CHOICE_BREAKFAST = 'breakfast'
+    TYPE_CHOICE_APPETIZER = 'appetizer'
+    TYPE_CHOICE_MAINCOURSE = 'main_course'
+    TYPE_CHOICE_DESSERT = 'dessert'
+    TYPE_CHOICE_SNACK = 'snack'
+    TYPE_CHOICE_DRINK = 'drink'
+
+    TYPE_CHOICES = (
+        (TYPE_CHOICE_BREAKFAST, 'Breakfast'),
+        (TYPE_CHOICE_APPETIZER, 'Appetizer'),
+        (TYPE_CHOICE_MAINCOURSE, 'Main course'),
+        (TYPE_CHOICE_DESSERT, 'Dessert'),
+        (TYPE_CHOICE_SNACK, 'Snack'),
+        (TYPE_CHOICE_DRINK, 'Drink')
+    )
+
+    category = models.CharField(
+        max_length=12,
+        choices=TYPE_CHOICES,
+        # null=True,
+        # blank=True,
+    )
+
     title = models.CharField(max_length=50)
     description = models.TextField(
         max_length=1000,
@@ -46,18 +68,20 @@ class RecipeModel(models.Model):
     )
     time = models.PositiveIntegerField()
     servings = models.PositiveIntegerField()
-    created = models.DateTimeField(default=timezone.now)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(default=timezone.now)
+    #TODO updated and created
 
     image = models.ImageField(
         upload_to='recipes',
         default='recipes/default.png',
     )
 
-    # author = models.ForeignKey(
-    #     User,
-    #     on_delete=models.CASCADE,
-    # )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+
     class Meta:
         ordering = ['-updated']
 
