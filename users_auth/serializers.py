@@ -1,8 +1,11 @@
+from abc import ABC
+
 from rest_framework import serializers
 from users_auth.models import RecipeUser
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
-class CustomUserSerializer(serializers.ModelSerializer):
+class RegisterUserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
     user_name = serializers.CharField(required=True)
     password = serializers.CharField(min_length=3, write_only=True)
