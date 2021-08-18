@@ -3,10 +3,16 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
-from recipes_api.models import RecipeModel
-from recipes_api.serializers import RecipeSerializer
+from recipes_api.models import RecipeModel, Comment
+from recipes_api.serializers import RecipeSerializer, CommentSerializer
 from recipes_api.permissions import RecipeEditPermission
-from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly, IsAuthenticated
+
+
+class CommentListCreate(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
 
 
 class RecipeListCreate(generics.ListCreateAPIView):
